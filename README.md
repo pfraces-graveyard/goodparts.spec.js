@@ -22,5 +22,5 @@ describe('Array', function () {
     $ mocha
 
 > .
-  
-  1 test complete (1ms)
+>
+> 1 test complete (1ms)
