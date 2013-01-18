@@ -28,10 +28,32 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
       word. Worse, it is not permitted to use a reserved word as the name of
       an object property in an object literal or following a dot in a
       refinement.</p>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should throw if &quot;in&quot; is used as a variable&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should throw if used as variables&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;var foo;&quot;</span><span class="p">);</span>
+        <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
+
         <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
           <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;var in;&quot;</span><span class="p">);</span>
         <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should not throw if they are not really reserved&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="p">(</span><span class="k">typeof</span> <span class="kc">undefined</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;undefined&#39;</span><span class="p">);</span>
+        <span class="nx">should</span><span class="p">.</span><span class="nx">exist</span><span class="p">(</span><span class="kc">NaN</span><span class="p">);</span>
+        <span class="nx">should</span><span class="p">.</span><span class="nx">exist</span><span class="p">(</span><span class="kc">Infinity</span><span class="p">);</span>
+
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;var undefined;&quot;</span><span class="p">);</span>
+        <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
+
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;var NaN;&quot;</span><span class="p">);</span>
+        <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
+
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;var Infinity;&quot;</span><span class="p">);</span>
+        <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
       <span class="p">});</span>
     <span class="p">});</span>
   <span class="p">});</span>

@@ -46,10 +46,32 @@ describe('JavaScript: The Good Parts', function () {
 //     an object property in an object literal or following a dot in a
 //     refinement.
 
-      it('should throw if "in" is used as a variable', function () {
+      it('should throw if used as variables', function () {
+        (function () {
+          eval("var foo;");
+        }).should.not.throw();
+
         (function () {
           eval("var in;");
         }).should.throw();
+      });
+
+      it('should not throw if they are not really reserved', function () {
+        (typeof undefined).should.equal('undefined');
+        should.exist(NaN);
+        should.exist(Infinity);
+
+        (function () {
+          eval("var undefined;");
+        }).should.not.throw();
+
+        (function () {
+          eval("var NaN;");
+        }).should.not.throw();
+
+        (function () {
+          eval("var Infinity;");
+        }).should.not.throw();
       });
     });
   });
