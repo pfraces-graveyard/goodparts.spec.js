@@ -513,12 +513,17 @@ describe('JavaScript: The Good Parts', function () {
           stack.push(i);
         }
         stack.length.should.be.equal(2);
+      });
 
-        /* filter example */
-        stack = [];
-        for (var j in bar) {
-          if (bar.hasOwnProperty(j)) {
-            stack.push(j);
+      it('undesirable properties should be filtered', function () {
+        var stack = []
+          , foo = { a: 'foo' }
+          , bar = from(foo);
+
+        bar.b = 'bar';
+        for (var i in bar) {
+          if (bar.hasOwnProperty(i)) {
+            stack.push(i);
           }
         }
         stack.length.should.be.equal(1);
