@@ -64,7 +64,6 @@ describe('JavaScript: The Good Parts', function () {
           eval("var Infinity;");
         }).should.not.throw();
       });
-      
     });
 
 // ### Numbers
@@ -111,6 +110,7 @@ describe('JavaScript: The Good Parts', function () {
 
         /* notSoBig++ does not alter its value */
         notSoBig *= 1.1;
+
         notSoBig.should.be.equal(Infinity);
       });
 
@@ -125,7 +125,6 @@ describe('JavaScript: The Good Parts', function () {
       it('a division by zero should be Infinity', function () {
         (1/0).should.be.equal(Infinity);
       });
-
     });
 
 // ### Strings
@@ -149,7 +148,6 @@ describe('JavaScript: The Good Parts', function () {
       it('with same characters in same order should be the same', function () {
         "foo".should.be.equal("f" + "o" + "o");
       });
-
     });
 
 // ### Statements
@@ -165,33 +163,27 @@ describe('JavaScript: The Good Parts', function () {
 
       it('should not have block scope', function () {
         var foo = 1;
-
         do {
           var foo = 2;
         } while (false);
-
         foo.should.be.not.equal(1);
       });
 
       it('should have function scope', function () {
         var foo = 1;
-
         (function () {
           var foo = 2;
           return foo;
         })().should.be.equal(2);
-
         foo.should.be.equal(1);
       });
 
       it('without var, outer scope should be used', function () {
         var foo = 1;
-
         (function () {
           foo = 2;
           return foo;
         })().should.be.equal(2);
-
         foo.should.be.not.equal(1);
       });
 
@@ -227,7 +219,6 @@ describe('JavaScript: The Good Parts', function () {
         [].should.be.ok;
         (function () {}).should.be.ok;
       });
-
     });
   });
 
@@ -236,13 +227,13 @@ describe('JavaScript: The Good Parts', function () {
   describe('3. Objects', function () {
 
     /**
-    * from()
+    * extend(o)
     *
-    * Inheritance. Simple enough for our testing purposes
-    **/
-    function from (obj) {
+    * Creates a new object which prototype points to the object received
+    */
+    function extend (o) {
       var F = function () {};
-      F.prototype = obj;
+      F.prototype = o;
       return new F();
     };
 
@@ -410,7 +401,7 @@ describe('JavaScript: The Good Parts', function () {
 
       it('on object update, its prototype should not be touched', function () {
         var foo = function () {}
-          , bar = from(new foo()); 
+          , bar = extend(new foo()); 
 
         foo.prototype.whoami = 'foo';
         bar.should.have.property('whoami', 'foo');
@@ -430,8 +421,8 @@ describe('JavaScript: The Good Parts', function () {
 
       it('on retrieve, should delegate', function () {
         var foo = {}
-          , bar = from(foo)
-          , qux = from(bar);
+          , bar = extend(foo)
+          , qux = extend(bar);
 
         foo.a = 'foo';
         bar.b = 'bar';
@@ -455,7 +446,7 @@ describe('JavaScript: The Good Parts', function () {
 
       it('should delegate dynamicaly', function () {
         var foo = {}
-          , bar = from(foo);
+          , bar = extend(foo);
 
         bar.should.not.have.property('whoami');
         foo.whoami = 'foo';
@@ -478,7 +469,7 @@ describe('JavaScript: The Good Parts', function () {
 
       it('should not look at the prototype chain', function () {
         var foo = { a: 'foo' }
-          , bar = from(foo);
+          , bar = extend(foo);
 
         bar.b = 'bar';
         bar.should.have.property('a', 'foo');
@@ -503,7 +494,7 @@ describe('JavaScript: The Good Parts', function () {
       it('for..in should loop over all properties', function () {
         var stack = []
           , foo = { a: 'foo' }
-          , bar = from(foo);
+          , bar = extend(foo);
 
         bar.b = 'bar';
         for (var i in bar) {
@@ -515,7 +506,7 @@ describe('JavaScript: The Good Parts', function () {
       it('undesirable properties should be filtered', function () {
         var stack = []
           , foo = { a: 'foo' }
-          , bar = from(foo);
+          , bar = extend(foo);
 
         bar.b = 'bar';
         for (var i in bar) {
@@ -547,7 +538,7 @@ describe('JavaScript: The Good Parts', function () {
 
       it('should delete only own properties', function () {
         var foo = { a: 'foo' }
-          , bar = from(foo);
+          , bar = extend(foo);
 
           bar.b = 'bar';
           bar.should.have.property('a', 'foo');
@@ -561,7 +552,7 @@ describe('JavaScript: The Good Parts', function () {
 
       it('should shine properties from prototype linkage', function () {
         var foo = { a: 'foo' }
-          , bar = from(foo);
+          , bar = extend(foo);
 
         bar.a = 'bar';
         bar.should.have.property('a', 'bar');
@@ -569,6 +560,36 @@ describe('JavaScript: The Good Parts', function () {
         delete bar.a;
         bar.should.have.property('a', 'foo');
       });
+    });
+  });
+
+// ## 4. Functions
+
+  describe('4. Functions', function () {
+
+// ### Function Objects
+
+    describe('Function Objects', function () {
+
+// >   Functions in JavaScript are objects. Objects are collections of
+//     name/value pairs having a hidden link to a prototype object. Objects
+//     produced from object literals are linked to `Object.prototype`. Function
+//     objects are linked to `Function.prototype` (which is itself linked to
+//     `Object.prototype`). Every function is also created with two additional
+//     hidden properties: the function context and the code that implements the
+//     function behavior.
+
+// >   Every function object is also created with a `prototype` property. Its
+//     value is an object with a `constructor` property whose value is **the**
+//     function. This is distinct from the hidden link to `Function.prototype`.
+
+// >   Since functions are objects, they can be used like any other value.
+//     Functions can be stored in variables, objects, and arrays. Functions
+//     can be passed as arguments to functions, and functions can be returned
+//     from functions. Also, since functions are objects, functions can have
+//     methods.
+
+// >   The thing that is special about functions is that they can be invoked.
     });
   });
 });
