@@ -253,6 +253,33 @@ describe('JavaScript: The Good Parts', function () {
 
     describe('Retrieval', function () {
 
+// >   Values can be retrieved from an object by wrapping a string expression
+//     in `[]`. If the string expression is literal, and if it is a legal
+//     JavaScript name and not a reserved word, then the dot notation can be
+//     used instead. The dot notation is preferred because it is more compact
+//     and reads better.
+
+      it('retrieval should be done with dot notation', function () {
+        var foo = { whoami: 'foo' };
+        (foo.whoami === 'foo').should.be.true;
+      });
+
+      it('should use square brackets with expressions', function () {
+        var foo = { 'foo man choo': 'that is me!' };
+
+        (function () {
+          eval("foo.'foo man choo';");
+        }).should.throw();
+
+        (function () {
+          eval("foo['foo man choo'];");
+        }).should.not.throw();
+
+        var fooRealName = 'foo ' + 'man ' + 'choo';
+        foo['foo ' + 'man ' + 'choo'].should.be.equal('that is me!');
+        foo[fooRealName].should.be.equal('that is me!');
+      });
+
 // >   Attempting to retrieve values from `undefined` will throw a `TypeError`
 //     exception. This can be guarded against with the `&&`operator
 
