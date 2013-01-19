@@ -239,9 +239,6 @@ describe('JavaScript: The Good Parts', function () {
     * from()
     *
     * Inheritance. Simple enough for our testing purposes
-    *
-    * In the book, Object is augmented with a create() method, which do the
-    * same, so I will follow its variable names
     **/
     function from (obj) {
       var F = function () {};
