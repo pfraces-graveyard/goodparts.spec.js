@@ -46,7 +46,6 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
           <span class="nb">eval</span><span class="p">(</span><span class="s2">&quot;var Infinity;&quot;</span><span class="p">);</span>
         <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
       <span class="p">});</span>
-      
     <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h3>Numbers</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Numbers&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <blockquote>
   <p>Unlike most other programming languages, there is no separate integer
       type, so 1 and 1.0 are the same value.</p>
@@ -83,6 +82,7 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
 
         <span class="cm">/* notSoBig++ does not alter its value */</span>
         <span class="nx">notSoBig</span> <span class="o">*=</span> <span class="mf">1.1</span><span class="p">;</span>
+
         <span class="nx">notSoBig</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="kc">Infinity</span><span class="p">);</span>
       <span class="p">});</span>
 
@@ -97,7 +97,6 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
       <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;a division by zero should be Infinity&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">0</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="kc">Infinity</span><span class="p">);</span>
       <span class="p">});</span>
-
     <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <h3>Strings</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Strings&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <blockquote>
   <p>Strings are immutable. Once it is made, a string can never be changed.
       But it is easy to make a new string by concatenating other strings
@@ -113,7 +112,6 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;with same characters in same order should be the same&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="s2">&quot;foo&quot;</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s2">&quot;f&quot;</span> <span class="o">+</span> <span class="s2">&quot;o&quot;</span> <span class="o">+</span> <span class="s2">&quot;o&quot;</span><span class="p">);</span>
       <span class="p">});</span>
-
     <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <h3>Statements</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Statements&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <blockquote>
   <p>When used inside a function, the <code>var</code> statement defines the function
       private variables.</p>
@@ -123,33 +121,27 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
       variables should be defined at the top of the function, not in blocks.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should not have block scope&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-
         <span class="k">do</span> <span class="p">{</span>
           <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
         <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="kc">false</span><span class="p">);</span>
-
         <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
       <span class="p">});</span>
 
       <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should have function scope&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-
         <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
           <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
           <span class="k">return</span> <span class="nx">foo</span><span class="p">;</span>
         <span class="p">})().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-
         <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
       <span class="p">});</span>
 
       <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;without var, outer scope should be used&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-
         <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
           <span class="nx">foo</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
           <span class="k">return</span> <span class="nx">foo</span><span class="p">;</span>
         <span class="p">})().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-
         <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
       <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <blockquote>
   <p>Here are the <strong>falsy</strong> values:</p>
@@ -183,18 +175,17 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
         <span class="p">[].</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">ok</span><span class="p">;</span>
         <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">ok</span><span class="p">;</span>
       <span class="p">});</span>
-
     <span class="p">});</span>
   <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <h2>3. Objects</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;3. Objects&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
     <span class="cm">/**</span>
-<span class="cm">    * from()</span>
+<span class="cm">    * extend(o)</span>
 <span class="cm">    *</span>
-<span class="cm">    * Inheritance. Simple enough for our testing purposes</span>
-<span class="cm">    **/</span>
-    <span class="kd">function</span> <span class="nx">from</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+<span class="cm">    * Creates a new object which prototype points to the object received</span>
+<span class="cm">    */</span>
+    <span class="kd">function</span> <span class="nx">extend</span> <span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
       <span class="kd">var</span> <span class="nx">F</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
-      <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">;</span>
+      <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span>
       <span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
     <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <h3>Retrieval</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Retrieval&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <blockquote>
   <p>Values can be retrieved from an object by wrapping a string expression
@@ -333,7 +324,7 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
       object, the object prototype is not touched.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;on object update, its prototype should not be touched&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
-          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="k">new</span> <span class="nx">foo</span><span class="p">());</span> 
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="k">new</span> <span class="nx">foo</span><span class="p">());</span> 
 
         <span class="nx">foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">whoami</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span>
         <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
@@ -351,8 +342,8 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
       called <strong>delegation</strong>.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;on retrieve, should delegate&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{}</span>
-          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">)</span>
-          <span class="p">,</span> <span class="nx">qux</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">bar</span><span class="p">);</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="nx">foo</span><span class="p">)</span>
+          <span class="p">,</span> <span class="nx">qux</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="nx">bar</span><span class="p">);</span>
 
         <span class="nx">foo</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span>
         <span class="nx">bar</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
@@ -374,7 +365,7 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
       all of the objects that are based on that prototype.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should delegate dynamicaly&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{}</span>
-          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
 
         <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">);</span>
         <span class="nx">foo</span><span class="p">.</span><span class="nx">whoami</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span>
@@ -391,7 +382,7 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
 
       <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should not look at the prototype chain&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">}</span>
-          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
 
         <span class="nx">bar</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
         <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
@@ -410,7 +401,7 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;for..in should loop over all properties&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">stack</span> <span class="o">=</span> <span class="p">[]</span>
           <span class="p">,</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">}</span>
-          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
 
         <span class="nx">bar</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
         <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">bar</span><span class="p">)</span> <span class="p">{</span>
@@ -422,7 +413,7 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
       <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;undesirable properties should be filtered&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">stack</span> <span class="o">=</span> <span class="p">[]</span>
           <span class="p">,</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">}</span>
-          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
 
         <span class="nx">bar</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
         <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">bar</span><span class="p">)</span> <span class="p">{</span>
@@ -448,7 +439,7 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
 
       <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should delete only own properties&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">}</span>
-          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
 
           <span class="nx">bar</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
           <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
@@ -462,7 +453,7 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
 
       <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should shine properties from prototype linkage&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">}</span>
-          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
 
         <span class="nx">bar</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
         <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">);</span>
@@ -471,6 +462,27 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
         <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
       <span class="p">});</span>
     <span class="p">});</span>
+  <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-39">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-39">&#182;</a>               </div>               <h2>4. Functions</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;4. Functions&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-40">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-40">&#182;</a>               </div>               <h3>Function Objects</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Function Objects&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-41">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-41">&#182;</a>               </div>               <blockquote>
+  <p>Functions in JavaScript are objects. Objects are collections of
+      name/value pairs having a hidden link to a prototype object. Objects
+      produced from object literals are linked to <code>Object.prototype</code>. Function
+      objects are linked to <code>Function.prototype</code> (which is itself linked to
+      <code>Object.prototype</code>). Every function is also created with two additional
+      hidden properties: the function context and the code that implements the
+      function behavior.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-42">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-42">&#182;</a>               </div>               <blockquote>
+  <p>Every function object is also created with a <code>prototype</code> property. Its
+      value is an object with a <code>constructor</code> property whose value is <strong>the</strong>
+      function. This is distinct from the hidden link to <code>Function.prototype</code>.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-43">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-43">&#182;</a>               </div>               <blockquote>
+  <p>Since functions are objects, they can be used like any other value.
+      Functions can be stored in variables, objects, and arrays. Functions
+      can be passed as arguments to functions, and functions can be returned
+      from functions. Also, since functions are objects, functions can have
+      methods.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-44">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-44">&#182;</a>               </div>               <blockquote>
+  <p>The thing that is special about functions is that they can be invoked.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">});</span>
 
