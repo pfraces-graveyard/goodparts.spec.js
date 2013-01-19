@@ -230,6 +230,7 @@ describe('JavaScript: The Good Parts', function () {
     * extend(o)
     *
     * Creates a new object which prototype points to the object received
+    * Simple inheritance abstraction. Enough to our testing purposes
     */
     function extend (o) {
       var F = function () {};
