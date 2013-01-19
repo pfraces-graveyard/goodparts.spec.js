@@ -191,12 +191,14 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
 <span class="cm">    * from()</span>
 <span class="cm">    *</span>
 <span class="cm">    * Inheritance. Simple enough for our testing purposes</span>
+<span class="cm">    *</span>
+<span class="cm">    * In the book, Object is augmented with a create() method, which do the</span>
+<span class="cm">    * same of this function, so I will follow its variable names</span>
 <span class="cm">    **/</span>
     <span class="kd">function</span> <span class="nx">from</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">obj</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">from</span><span class="p">(</span><span class="k">new</span> <span class="nx">obj</span><span class="p">());</span>
-      <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
-      <span class="nx">self</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">;</span>
-      <span class="k">return</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
+      <span class="kd">var</span> <span class="nx">F</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+      <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">;</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
     <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <h3>Retrieval</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Retrieval&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <blockquote>
   <p>Attempting to retrieve values from <code>undefined</code> will throw a <code>TypeError</code>
       exception. This can be guarded against with the <code>&amp;&amp;</code>operator</p>
@@ -309,7 +311,7 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
       object, the object prototype is not touched.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;on object update, its prototype should not be touched&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
-          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span> 
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="k">new</span> <span class="nx">foo</span><span class="p">());</span> 
 
         <span class="nx">foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">whoami</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span>
         <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>

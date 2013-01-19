@@ -239,12 +239,14 @@ describe('JavaScript: The Good Parts', function () {
     * from()
     *
     * Inheritance. Simple enough for our testing purposes
+    *
+    * In the book, Object is augmented with a create() method, which do the
+    * same of this function, so I will follow its variable names
     **/
     function from (obj) {
-      if (typeof obj === 'function') return from(new obj());
-      var self = function () {};
-      self.prototype = obj;
-      return new self();
+      var F = function () {};
+      F.prototype = obj;
+      return new F();
     };
 
 // ### Retrieval
@@ -384,7 +386,7 @@ describe('JavaScript: The Good Parts', function () {
 
       it('on object update, its prototype should not be touched', function () {
         var foo = function () {}
-          , bar = from(foo); 
+          , bar = from(new foo()); 
 
         foo.prototype.whoami = 'foo';
         bar.should.have.property('whoami', 'foo');
