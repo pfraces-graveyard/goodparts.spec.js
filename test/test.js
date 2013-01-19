@@ -108,7 +108,9 @@ describe('JavaScript: The Good Parts', function () {
       it('a num > 1.79769313486231570e+308 should be Infinity', function () {
         var notSoBig = 1.79769313486231570e+308;
         notSoBig.should.not.be.equal(Infinity);
-        notSoBig *= 1.1; /* notSoBig++ does not change the value */
+
+        /* notSoBig++ does not alter its value */
+        notSoBig *= 1.1;
         notSoBig.should.be.equal(Infinity);
       });
 
@@ -176,10 +178,21 @@ describe('JavaScript: The Good Parts', function () {
 
         (function () {
           var foo = 2;
-          foo.should.be.equal(2);
-        })();
+          return foo;
+        })().should.be.equal(2);
 
         foo.should.be.equal(1);
+      });
+
+      it('without var, outer scope should be used', function () {
+        var foo = 1;
+
+        (function () {
+          foo = 2;
+          return foo;
+        })().should.be.equal(2);
+
+        foo.should.be.not.equal(1);
       });
 
 // >   Here are the **falsy** values:
@@ -216,6 +229,315 @@ describe('JavaScript: The Good Parts', function () {
       });
 
     });
+  });
 
+// ## 3. Objects
+
+  describe('3. Objects', function () {
+
+    /**
+    * from()
+    *
+    * Inheritance. Simple enough for our testing purposes
+    **/
+    function from (obj) {
+      if (typeof obj === 'function') return from(new obj());
+      var self = function () {};
+      self.prototype = obj;
+      return new self();
+    };
+
+// ### Retrieval
+
+    describe('Retrieval', function () {
+
+// >   Attempting to retrieve values from `undefined` will throw a `TypeError`
+//     exception. This can be guarded against with the `&&`operator
+
+      it('properties of an undefined should throw', function () {
+        var foo;
+
+        /* foo.should.be.a('undefined') throws */
+        (typeof foo).should.equal('undefined');
+
+        (function () { foo.bar; }).should.throw();
+        (function () { foo && foo.bar; }).should.not.throw();
+      });
+
+      it('properties of a null should throw', function () {
+        var foo = null;
+        (function () { foo.bar; }).should.throw();
+      });
+
+      it('properties of defined entities should not throw', function () {
+        var foo = 1;
+        (function () { foo.bar; }).should.not.throw();
+        foo = 'x';
+        (function () { foo.bar; }).should.not.throw();
+      });
+    });
+
+// ### Update
+
+    describe('Update', function () {
+    
+// >   A value in an object can be updated by assignment. If the property name
+//     already exists in the object, the property value is replaced. If the
+//     object does not already have that property name, the object is
+//     **augmented**
+
+      it('should augment with undefined properties', function () {
+        var foo = {};
+        foo.should.not.have.property('bar');
+
+        foo.bar = 'x';
+        foo.should.have.property('bar', 'x');
+      });
+    });
+
+// ### Reference
+
+    describe('Reference', function () {
+
+// >   Objects are passed around by reference. They are never copied
+
+      it('should be passed by reference in assignment', function () {
+        var foo = {}
+          , bar = {};
+
+        foo.should.not.be.equal(bar);
+        foo.qux = 'x';
+        bar.should.not.have.property('qux');
+
+        foo = bar;
+        foo.should.be.equal(bar);
+        foo.qux = 'qux of foo';
+        bar.should.have.property('qux', 'qux of foo');
+      });
+
+      it('should be passed by reference in functions', function () {
+        var foo = {};
+
+        (function (bar) {
+          bar.qux = 'qux of bar';
+        })(foo);
+
+        foo.should.have.property('qux', 'qux of bar');
+      });
+    });
+
+// ### Prototype
+
+    describe('Prototype', function () {
+
+// >   Every object is linked to a prototype object from which it can inherit
+//     properties. All objects created from object literals are linked to
+//     `Object.prototype`, an object that comes standard with JavaScript
+
+      it('should exist Object.prototype', function () {
+        should.exist(Object);
+        Object.should.have.property('prototype');
+      });
+
+      it('only functions should have prototype property', function () {
+        ({}).should.not.have.property('prototype');
+        (function () {}).should.have.property('prototype');
+      });
+
+      it('should be linked to Object.prototype by default', function () {
+        var foo = {};
+        foo.should.not.have.property('bar');
+        Object.prototype.bar = 'bar of Object';
+        foo.should.have.property('bar', 'bar of Object');
+
+        /* Augmenting Object.prototype causes subsequent tests to fail */
+        delete Object.prototype.bar;
+      });
+
+// >   When you make a new object , you can select the object that should be
+//     its prototype. The mechanism that JavaScript provides to do this is
+//     messy and complex, but it can be significantly simplified.
+
+      it('prototype should be applied with the new operator', function () {
+        var foo = function () {};
+        foo.prototype.whoami = 'foo';
+        foo.should.not.have.property('whoami');
+        (new foo()).should.have.property('whoami', 'foo');
+      });
+
+      it('prototype object should point to any object', function () {
+        var foo = function () {};
+        foo.prototype.whoami = 'foo';
+
+        var bar = function () {};
+        bar.should.not.have.property('whoami');
+        bar.prototype = new foo();
+
+        /* remember: prototype should be applied with the new operator */
+        bar.should.not.have.property('whoami');
+
+        (new bar).should.have.property('whoami', 'foo');
+      });
+
+// >   The prototype link has no effect on updating. When we make changes to an
+//     object, the object prototype is not touched.
+
+      it('on object update, its prototype should not be touched', function () {
+        var foo = function () {}
+          , bar = from(foo); 
+
+        foo.prototype.whoami = 'foo';
+        bar.should.have.property('whoami', 'foo');
+        bar.whoami = 'bar';
+        bar.should.have.property('whoami', 'bar');
+        foo.prototype.should.have.property('whoami', 'foo');
+      });
+
+// >   The prototype link is used only on retrieval. If we try to retrieve a
+//     property value from an object, and if the object lacks the property
+//     name, then JavaScript attempts to retrieve the property value from the
+//     prototype object. And if that object is lacking the property, then it
+//     goeas to its prototype, and so on until the process finally bottoms out
+//     with `Object.prototype`. If the desired property exists nowhere in the
+//     prototype chain, then the result is the `undefined` value. This is
+//     called **delegation**.
+
+      it('on retrieve, should delegate', function () {
+        var foo = {}
+          , bar = from(foo)
+          , qux = from(bar);
+
+        foo.a = 'foo';
+        bar.b = 'bar';
+        qux.c = 'qux';
+
+        /* qux.should.be.eql({ a: 'foo', b: 'bar', c: 'qux' }) fails,
+          maybe mocha uses hasOwnProperty() in eql() */
+        qux.should.have.ownProperty('c');
+        qux.should.not.have.ownProperty('b');
+        qux.should.not.have.ownProperty('a');
+        
+        qux.a.should.be.equal('foo');
+        qux.b.should.be.equal('bar');
+        qux.c.should.be.equal('qux');
+        (qux.d === undefined).should.be.true;
+      });
+
+// >   The prototype relationship is a dynamic relationship. If we add a new
+//     property to a prototype, that property will immediately be visible in
+//     all of the objects that are based on that prototype.
+
+      it('should delegate dynamicaly', function () {
+        var foo = {}
+          , bar = from(foo);
+
+        bar.should.not.have.property('whoami');
+        foo.whoami = 'foo';
+        bar.should.have.property('whoami', 'foo');
+      });
+    });
+
+// ### Reflection
+
+    describe('Reflection', function () {
+
+// >   `hasOwnProperty` method returns `true` if the object has a particular
+//     property. It does not look at the prototype chain.
+
+      it('hasOwnProperty should be true only for existing props', function () {
+        var foo = { a: 'foo' };
+        foo.hasOwnProperty('a').should.be.true;
+        foo.hasOwnProperty('b').should.be.false;
+      });
+
+      it('should not look at the prototype chain', function () {
+        var foo = { a: 'foo' }
+          , bar = from(foo);
+
+        bar.b = 'bar';
+        bar.should.have.property('a', 'foo');
+        bar.hasOwnProperty('a').should.be.false;
+        bar.hasOwnProperty('b').should.be.true;
+      });
+    });
+
+// ### Enumeration
+
+    describe('Enumeration', function () {
+
+// >   The `for in` statement can loop over all of the property names in an
+//     object. The enumeration will include all of the properties, so it is
+//     necessary to filter out the values you don't want. The most common
+//     filters are the `hasOwnProperty` method and using `typeof` to exclude
+//     functions
+//
+// >   There is no guarantee on the order of the names, so be prepared for the
+//     names to appear in any order.
+
+      it('for..in should loop over all properties', function () {
+        var stack = []
+          , foo = { a: 'foo' }
+          , bar = from(foo);
+
+        bar.b = 'bar';
+        for (var i in bar) {
+          stack.push(i);
+        }
+        stack.length.should.be.equal(2);
+
+        /* filter example */
+        stack = [];
+        for (var j in bar) {
+          if (bar.hasOwnProperty(j)) {
+            stack.push(j);
+          }
+        }
+        stack.length.should.be.equal(1);
+      });
+    });
+
+// ### Delete
+
+    describe('Delete', function () {
+
+// >   The `delete` operator can be used to remove a property from an object.
+//     It will remove a property from the object if it has one. It will not
+//     touch any of the objects in the prototype linkage.
+//
+// >   Removeing a property from an object may allow a property from the
+//     prototype linkage to shine through.
+
+      it('delete should delete a property', function () {
+        var foo = { a: 'foo' };
+        foo.should.have.property('a');
+        delete foo.a;
+        foo.should.not.have.property('a');
+      });
+
+      it('should delete only own properties', function () {
+        var foo = { a: 'foo' }
+          , bar = from(foo);
+
+          bar.b = 'bar';
+          bar.should.have.property('a', 'foo');
+          bar.should.have.property('b', 'bar');
+          
+          delete bar.a;
+          delete bar.b;
+          bar.should.have.property('a', 'foo');
+          bar.should.not.have.property('b');
+      });
+
+      it('should shine properties from prototype linkage', function () {
+        var foo = { a: 'foo' }
+          , bar = from(foo);
+
+        bar.a = 'bar';
+        bar.should.have.property('a', 'bar');
+        
+        delete bar.a;
+        bar.should.have.property('a', 'foo');
+      });
+    });
   });
 });

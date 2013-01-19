@@ -80,7 +80,9 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;a num &gt; 1.79769313486231570e+308 should be Infinity&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">notSoBig</span> <span class="o">=</span> <span class="mf">1.79769313486231570</span><span class="nx">e</span><span class="o">+</span><span class="mi">308</span><span class="p">;</span>
         <span class="nx">notSoBig</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="kc">Infinity</span><span class="p">);</span>
-        <span class="nx">notSoBig</span> <span class="o">*=</span> <span class="mf">1.1</span><span class="p">;</span> <span class="cm">/* notSoBig++ does not change the value */</span>
+
+        <span class="cm">/* notSoBig++ does not alter its value */</span>
+        <span class="nx">notSoBig</span> <span class="o">*=</span> <span class="mf">1.1</span><span class="p">;</span>
         <span class="nx">notSoBig</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="kc">Infinity</span><span class="p">);</span>
       <span class="p">});</span>
 
@@ -134,10 +136,21 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
 
         <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
           <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-          <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-        <span class="p">})();</span>
+          <span class="k">return</span> <span class="nx">foo</span><span class="p">;</span>
+        <span class="p">})().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 
         <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;without var, outer scope should be used&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="nx">foo</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+          <span class="k">return</span> <span class="nx">foo</span><span class="p">;</span>
+        <span class="p">})().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
       <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <blockquote>
   <p>Here are the <strong>falsy</strong> values:</p>
   
@@ -172,7 +185,263 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
       <span class="p">});</span>
 
     <span class="p">});</span>
+  <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <h2>3. Objects</h2>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;3. Objects&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 
+    <span class="cm">/**</span>
+<span class="cm">    * from()</span>
+<span class="cm">    *</span>
+<span class="cm">    * Inheritance. Simple enough for our testing purposes</span>
+<span class="cm">    **/</span>
+    <span class="kd">function</span> <span class="nx">from</span> <span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">obj</span> <span class="o">===</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="k">return</span> <span class="nx">from</span><span class="p">(</span><span class="k">new</span> <span class="nx">obj</span><span class="p">());</span>
+      <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">;</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">self</span><span class="p">();</span>
+    <span class="p">};</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <h3>Retrieval</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Retrieval&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <blockquote>
+  <p>Attempting to retrieve values from <code>undefined</code> will throw a <code>TypeError</code>
+      exception. This can be guarded against with the <code>&amp;&amp;</code>operator</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;properties of an undefined should throw&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span><span class="p">;</span>
+
+        <span class="cm">/* foo.should.be.a(&#39;undefined&#39;) throws */</span>
+        <span class="p">(</span><span class="k">typeof</span> <span class="nx">foo</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;undefined&#39;</span><span class="p">);</span>
+
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">bar</span><span class="p">;</span> <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">foo</span> <span class="o">&amp;&amp;</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">bar</span><span class="p">;</span> <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;properties of a null should throw&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">bar</span><span class="p">;</span> <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;properties of defined entities should not throw&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">bar</span><span class="p">;</span> <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
+        <span class="nx">foo</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">;</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">bar</span><span class="p">;</span> <span class="p">}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="k">throw</span><span class="p">();</span>
+      <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <h3>Update</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Update&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <blockquote>
+  <p>A value in an object can be updated by assignment. If the property name
+      already exists in the object, the property value is replaced. If the
+      object does not already have that property name, the object is
+      <strong>augmented</strong></p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should augment with undefined properties&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">;</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <h3>Reference</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Reference&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <blockquote>
+  <p>Objects are passed around by reference. They are never copied</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be passed by reference in assignment&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{}</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="p">{};</span>
+
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">bar</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">qux</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;qux&#39;</span><span class="p">);</span>
+
+        <span class="nx">foo</span> <span class="o">=</span> <span class="nx">bar</span><span class="p">;</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">bar</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">qux</span> <span class="o">=</span> <span class="s1">&#39;qux of foo&#39;</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;qux&#39;</span><span class="p">,</span> <span class="s1">&#39;qux of foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be passed by reference in functions&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{};</span>
+
+        <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">bar</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">bar</span><span class="p">.</span><span class="nx">qux</span> <span class="o">=</span> <span class="s1">&#39;qux of bar&#39;</span><span class="p">;</span>
+        <span class="p">})(</span><span class="nx">foo</span><span class="p">);</span>
+
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;qux&#39;</span><span class="p">,</span> <span class="s1">&#39;qux of bar&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <h3>Prototype</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Prototype&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <blockquote>
+  <p>Every object is linked to a prototype object from which it can inherit
+      properties. All objects created from object literals are linked to
+      <code>Object.prototype</code>, an object that comes standard with JavaScript</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should exist Object.prototype&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="nx">should</span><span class="p">.</span><span class="nx">exist</span><span class="p">(</span><span class="nb">Object</span><span class="p">);</span>
+        <span class="nb">Object</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;prototype&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;only functions should have prototype property&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="p">({}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;prototype&#39;</span><span class="p">);</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{}).</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;prototype&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be linked to Object.prototype by default&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+        <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="s1">&#39;bar of Object&#39;</span><span class="p">;</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bar of Object&#39;</span><span class="p">);</span>
+
+        <span class="cm">/* Augmenting Object.prototype causes subsequent tests to fail */</span>
+        <span class="k">delete</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">bar</span><span class="p">;</span>
+      <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <blockquote>
+  <p>When you make a new object , you can select the object that should be
+      its prototype. The mechanism that JavaScript provides to do this is
+      messy and complex, but it can be significantly simplified.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;prototype should be applied with the new operator&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">whoami</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">);</span>
+        <span class="p">(</span><span class="k">new</span> <span class="nx">foo</span><span class="p">()).</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;prototype object should point to any object&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">whoami</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span>
+
+        <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">);</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">foo</span><span class="p">();</span>
+
+        <span class="cm">/* remember: prototype should be applied with the new operator */</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">);</span>
+
+        <span class="p">(</span><span class="k">new</span> <span class="nx">bar</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <blockquote>
+  <p>The prototype link has no effect on updating. When we make changes to an
+      object, the object prototype is not touched.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;on object update, its prototype should not be touched&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span> 
+
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">whoami</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">whoami</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <blockquote>
+  <p>The prototype link is used only on retrieval. If we try to retrieve a
+      property value from an object, and if the object lacks the property
+      name, then JavaScript attempts to retrieve the property value from the
+      prototype object. And if that object is lacking the property, then it
+      goeas to its prototype, and so on until the process finally bottoms out
+      with <code>Object.prototype</code>. If the desired property exists nowhere in the
+      prototype chain, then the result is the <code>undefined</code> value. This is
+      called <strong>delegation</strong>.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;on retrieve, should delegate&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{}</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">)</span>
+          <span class="p">,</span> <span class="nx">qux</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">bar</span><span class="p">);</span>
+
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
+        <span class="nx">qux</span><span class="p">.</span><span class="nx">c</span> <span class="o">=</span> <span class="s1">&#39;qux&#39;</span><span class="p">;</span>
+
+        <span class="cm">/* qux.should.be.eql({ a: &#39;foo&#39;, b: &#39;bar&#39;, c: &#39;qux&#39; }) fails,</span>
+<span class="cm">          maybe mocha uses hasOwnProperty() in eql() */</span>
+        <span class="nx">qux</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">ownProperty</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">);</span>
+        <span class="nx">qux</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">ownProperty</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">);</span>
+        <span class="nx">qux</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">ownProperty</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">);</span>
+        
+        <span class="nx">qux</span><span class="p">.</span><span class="nx">a</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+        <span class="nx">qux</span><span class="p">.</span><span class="nx">b</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+        <span class="nx">qux</span><span class="p">.</span><span class="nx">c</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;qux&#39;</span><span class="p">);</span>
+        <span class="p">(</span><span class="nx">qux</span><span class="p">.</span><span class="nx">d</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+      <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <blockquote>
+  <p>The prototype relationship is a dynamic relationship. If we add a new
+      property to a prototype, that property will immediately be visible in
+      all of the objects that are based on that prototype.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should delegate dynamicaly&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{}</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">whoami</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-32">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-32">&#182;</a>               </div>               <h3>Reflection</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Reflection&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-33">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-33">&#182;</a>               </div>               <blockquote>
+  <p><code>hasOwnProperty</code> method returns <code>true</code> if the object has a particular
+      property. It does not look at the prototype chain.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;hasOwnProperty should be true only for existing props&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">false</span><span class="p">;</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should not look at the prototype chain&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">}</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">false</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+      <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-34">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-34">&#182;</a>               </div>               <h3>Enumeration</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Enumeration&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-35">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-35">&#182;</a>               </div>               <blockquote>
+  <p>The <code>for in</code> statement can loop over all of the property names in an
+      object. The enumeration will include all of the properties, so it is
+      necessary to filter out the values you don't want. The most common
+      filters are the <code>hasOwnProperty</code> method and using <code>typeof</code> to exclude
+      functions</p>
+  
+  <p>There is no guarantee on the order of the names, so be prepared for the
+      names to appear in any order.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;for..in should loop over all properties&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">stack</span> <span class="o">=</span> <span class="p">[]</span>
+          <span class="p">,</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">}</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">bar</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">stack</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">stack</span><span class="p">.</span><span class="nx">length</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+
+        <span class="cm">/* filter example */</span>
+        <span class="nx">stack</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="k">in</span> <span class="nx">bar</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">bar</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">j</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">stack</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">j</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nx">stack</span><span class="p">.</span><span class="nx">length</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-36">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-36">&#182;</a>               </div>               <h3>Delete</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Delete&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-37">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-37">&#182;</a>               </div>               <blockquote>
+  <p>The <code>delete</code> operator can be used to remove a property from an object.
+      It will remove a property from the object if it has one. It will not
+      touch any of the objects in the prototype linkage.</p>
+  
+  <p>Removeing a property from an object may allow a property from the
+      prototype linkage to shine through.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;delete should delete a property&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">);</span>
+        <span class="k">delete</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should delete only own properties&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">}</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+
+          <span class="nx">bar</span><span class="p">.</span><span class="nx">b</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
+          <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+          <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+          
+          <span class="k">delete</span> <span class="nx">bar</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span>
+          <span class="k">delete</span> <span class="nx">bar</span><span class="p">.</span><span class="nx">b</span><span class="p">;</span>
+          <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+          <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should shine properties from prototype linkage&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">a</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">}</span>
+          <span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">from</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">a</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+        
+        <span class="k">delete</span> <span class="nx">bar</span><span class="p">.</span><span class="nx">a</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">});</span>
 
