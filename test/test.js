@@ -1,10 +1,9 @@
 // # test-js
 
-// Conjunto de tests sobre el comportamiento de JavaScript en diferentes
-// entornos
+// Testing JavaScript internals!
 //
-// Empezaré testeando el libro 'JavaScript: The Good Parts' bajo `node.js` e
-// iré ampliando progresivamente con diferentes libros y entornos
+// I will start test which is said in 'JavaScript: The Good Parts' under
+// `node.js`. Future updates will include more readings and more environments.
 
 var should = require('should');
 
