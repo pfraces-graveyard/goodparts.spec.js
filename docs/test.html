@@ -15,7 +15,7 @@
 <span class="kd">function</span> <span class="nx">root</span> <span class="p">()</span> <span class="p">{</span>
   <span class="cm">/*</span>
 <span class="cm">  * return window || global;</span>
-<span class="cm">  *   causes a ReferenceError: window is not defined.</span>
+<span class="cm">  *   in node.js, causes a ReferenceError: window is not defined.</span>
 <span class="cm">  * return (function () { return this; })();</span>
 <span class="cm">  *   will be a good solution for code-sharing (node.js/browsers).</span>
 <span class="cm">  * But actually we are just in node.js, so we can just return global.</span>
@@ -826,7 +826,42 @@
         <span class="p">}</span>
         <span class="p">(</span><span class="k">new</span> <span class="nx">Foo</span><span class="p">()).</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">);</span>
       <span class="p">});</span>
-    <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-64">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-64">&#182;</a>               </div>               <h3>Exceptions</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Exceptions&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-65">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-65">&#182;</a>               </div>               <blockquote>
+  <p>The <code>throw</code> statement interrupts execution of the function. It should be
+      given an <code>exception</code> object containing a <code>name</code> property that identifies
+      the type of the exception, and a descriptive <code>message</code> property. You can
+      also add other properties.</p>
+  
+  <p>The <code>exception</code> object will be delivered to the <code>catch</code> clause of a
+      <code>try</code> statement.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should contain name and message&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">catched</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="k">try</span> <span class="p">{</span>
+          <span class="kd">var</span> <span class="nx">foo</span><span class="p">;</span>
+          <span class="nx">foo</span><span class="p">.</span><span class="nx">bar</span><span class="p">;</span>
+          <span class="nx">catched</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">e</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;TypeError&#39;</span><span class="p">);</span>
+          <span class="nx">e</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">catched</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+      <span class="p">});</span>
+      
+      <span class="cm">/* in node.js, throw can be given with any kind of object */</span>
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should contain other properties&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">catched</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="k">try</span> <span class="p">{</span>
+          <span class="k">throw</span> <span class="p">{</span> <span class="nx">whoami</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="p">};</span>
+          <span class="nx">catched</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">e</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span>
+          <span class="nx">e</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">catched</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+      <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-66">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-66">&#182;</a>               </div>               <h3>Closure</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Closure&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-67">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-67">&#182;</a>               </div>               <blockquote>
+  
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">});</span>
 

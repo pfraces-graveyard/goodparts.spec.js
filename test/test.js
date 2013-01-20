@@ -17,7 +17,7 @@ var should = require('should');
 function root () {
   /*
   * return window || global;
-  *   causes a ReferenceError: window is not defined.
+  *   in node.js, causes a ReferenceError: window is not defined.
   * return (function () { return this; })();
   *   will be a good solution for code-sharing (node.js/browsers).
   * But actually we are just in node.js, so we can just return global.
@@ -1009,13 +1009,36 @@ describe('JavaScript: The Good Parts', function () {
 // >   The `exception` object will be delivered to the `catch` clause of a
 //     `try` statement.
 
-      it('should contain name and message');
-      it('should contain other properties');
+      it('should contain name and message', function () {
+        var catched = true;
+        try {
+          var foo;
+          foo.bar;
+          catched = false;
+        } catch (e) {
+          e.should.have.property('name', 'TypeError');
+          e.should.have.property('message');
+        }
+        catched.should.be.true;
+      });
+      
+      /* in node.js, throw can be given with any kind of object */
+      it('should contain other properties', function () {
+        var catched = true;
+        try {
+          throw { whoami: 'foo' };
+          catched = false;
+        } catch (e) {
+          e.should.not.have.property('name');
+          e.should.have.property('whoami', 'foo');
+        }
+        catched.should.be.true;
+      });
     });
 
-// ### Augmenting Types
+// ### Closure
 
-    describe('Augmenting Types', function () {
+    describe('Closure', function () {
 
 // >   
 
