@@ -670,8 +670,43 @@
         <span class="p">}</span>
         <span class="nx">need2Args</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
       <span class="p">});</span>
-    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-51">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-51">&#182;</a>               </div>               <h3>The Method Invocation Pattern</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;The Method Invocation Pattern&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-51">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-51">&#182;</a>               </div>               <h3>The Method Invocation Pattern</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;The Method Invocation Pattern&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-52">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-52">&#182;</a>               </div>               <blockquote>
+  <p>When a function is stored as a property of an object, we call it a
+      <strong>method</strong>. When a method is invoked, <code>this</code> is bound to that object.</p>
+  
+  <p>A method can use <code>this</code> to access the object so that it can retrieve
+      values from the object or modify the object. The binding of <code>this</code> to
+      the object happens at invocation time. This very late binding makes
+      functions that use <code>this</code> highly reusable. Methods that get their object
+      context from <code>this</code> are called <strong>public methods</strong>.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;this should be bound to the object on methods&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">getName</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">whoami</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">whoami</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span>
+          <span class="p">,</span> <span class="nx">getName</span><span class="o">:</span> <span class="nx">getName</span>
+        <span class="p">}</span>
+        <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">whoami</span><span class="o">:</span> <span class="s1">&#39;bar&#39;</span>
+          <span class="p">,</span> <span class="nx">getName</span><span class="o">:</span> <span class="nx">getName</span>
+        <span class="p">}</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">getName</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">getName</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
 
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be bound to arrays&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">getLength</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">getLength</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">]().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">]().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+      <span class="p">});</span>
     <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">});</span>

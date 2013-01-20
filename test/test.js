@@ -807,6 +807,43 @@ describe('JavaScript: The Good Parts', function () {
 
     describe('The Method Invocation Pattern', function () {
 
+// >   When a function is stored as a property of an object, we call it a
+//     **method**. When a method is invoked, `this` is bound to that object.
+//
+// >   A method can use `this` to access the object so that it can retrieve
+//     values from the object or modify the object. The binding of `this` to
+//     the object happens at invocation time. This very late binding makes
+//     functions that use `this` highly reusable. Methods that get their object
+//     context from `this` are called **public methods**.
+
+      it('this should be bound to the object on methods', function () {
+        function getName () {
+          return this.whoami;
+        }
+        var foo = {
+          whoami: 'foo'
+          , getName: getName
+        }
+        var bar = {
+          whoami: 'bar'
+          , getName: getName
+        }
+        foo.getName().should.be.equal('foo');
+        bar.getName().should.be.equal('bar');
+      });
+
+      it('should be bound to arrays', function () {
+        function getLength () {
+          return this.length;
+        }
+        var foo = [];
+        foo.push(getLength);
+        foo[0]().should.be.equal(1);
+
+        foo.push(1);
+        foo.push('a');
+        foo[0]().should.be.equal(3);
+      });
     });
   });
 });
