@@ -631,15 +631,11 @@
           <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
           <span class="kd">function</span> <span class="nx">bar</span> <span class="p">()</span> <span class="p">{</span>
             <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-            <span class="kd">function</span> <span class="nx">qux</span> <span class="p">()</span> <span class="p">{</span>
-              <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-              <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">+</span> <span class="nx">c</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="k">return</span> <span class="nx">qux</span><span class="p">();</span>
+            <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
           <span class="p">}</span>
           <span class="k">return</span> <span class="nx">bar</span><span class="p">();</span>
         <span class="p">}</span>
-        <span class="nx">foo</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
       <span class="p">});</span>
     <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-48">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-48">&#182;</a>               </div>               <h3>Invocation</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Invocation&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-49">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-49">&#182;</a>               </div>               <blockquote>
   <p>In adition to the declared parameters, every function receives two

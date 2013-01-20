@@ -754,15 +754,11 @@ describe('JavaScript: The Good Parts', function () {
           var a = 1;
           function bar () {
             var b = 2;
-            function qux () {
-              var c = 3;
-              return a + b + c;
-            }
-            return qux();
+            return a + b;
           }
           return bar();
         }
-        foo().should.be.equal(6);
+        foo().should.be.equal(3);
       });
     });
 
