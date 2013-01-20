@@ -13,7 +13,14 @@
 <span class="cm"> * Returns the root object, `window` in the browser, or `global` on the server.</span>
 <span class="cm"> */</span>
 <span class="kd">function</span> <span class="nx">root</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="k">this</span><span class="p">;</span> <span class="p">})();</span>
+  <span class="cm">/*</span>
+<span class="cm">  * return window || global;</span>
+<span class="cm">  *   causes a ReferenceError: window is not defined.</span>
+<span class="cm">  * return (function () { return this; })();</span>
+<span class="cm">  *   will be a good solution for code-sharing (node.js/browsers).</span>
+<span class="cm">  * But actually we are just in node.js, so we can just return global.</span>
+<span class="cm">  */</span>
+  <span class="k">return</span> <span class="nx">global</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="cm">/**</span>

@@ -15,7 +15,14 @@ var should = require('should');
  * Returns the root object, `window` in the browser, or `global` on the server.
  */
 function root () {
-  return (function () { return this; })();
+  /*
+  * return window || global;
+  *   causes a ReferenceError: window is not defined.
+  * return (function () { return this; })();
+  *   will be a good solution for code-sharing (node.js/browsers).
+  * But actually we are just in node.js, so we can just return global.
+  */
+  return global;
 }
 
 /**
