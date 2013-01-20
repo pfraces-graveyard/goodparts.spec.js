@@ -1,11 +1,34 @@
-// # test-js
-
 // Testing JavaScript internals.
 //
 // I will start testing which is said in 'JavaScript: The Good Parts' under
 // `node.js`. Future updates will include more readings and more environments.
 
 var should = require('should');
+
+/**
+ * Helper functions
+ */
+
+/**
+ * root()
+ *
+ * Returns the root object, `window` in the browser, or `global` on the server.
+ */
+function root () {
+  return (function () { return this; })();
+}
+
+/**
+* extend(o)
+*
+* Creates a new object which prototype points to the object received.
+* Simple inheritance abstraction.
+*/
+function extend (o) {
+  var F = function () {};
+  F.prototype = o;
+  return new F();
+}
 
 // # "JavaScript: The Good Parts" by Douglas Crockford
 
@@ -225,18 +248,6 @@ describe('JavaScript: The Good Parts', function () {
 
   describe('3. Objects', function () {
 
-    /**
-    * extend(o)
-    *
-    * Creates a new object which prototype points to the object received.
-    * Simple inheritance abstraction. Enough to our testing purposes
-    */
-    function extend (o) {
-      var F = function () {};
-      F.prototype = o;
-      return new F();
-    };
-
 // ### Retrieval
 
     describe('Retrieval', function () {
@@ -428,16 +439,10 @@ describe('JavaScript: The Good Parts', function () {
         bar.b = 'bar';
         qux.c = 'qux';
 
-        /* qux.should.be.eql({ a: 'foo', b: 'bar', c: 'qux' }) fails,
-          maybe mocha uses hasOwnProperty() in eql() */
-        qux.should.have.ownProperty('c');
-        qux.should.not.have.ownProperty('b');
-        qux.should.not.have.ownProperty('a');
-        
         qux.a.should.be.equal('foo');
         qux.b.should.be.equal('bar');
         qux.c.should.be.equal('qux');
-        (qux.d === undefined).should.be.true;
+        (typeof qux.d).should.be.equal('undefined');
       });
 
 // >   The prototype relationship is a dynamic relationship. If we add a new
@@ -625,44 +630,7 @@ describe('JavaScript: The Good Parts', function () {
 //     can be passed as arguments to functions, and functions can be returned
 //     from functions. Also, since functions are objects, functions can have
 //     methods.
-
-      it('functions should be stored in a variable', function () {
-        var foo = function () {};
-        (typeof foo).should.be.equal('function');
-      });
-
-      it('should be stored in objects', function () {
-        var foo = { fn: function () {} };
-        (typeof foo.fn).should.be.equal('function');
-      });
-
-      it('should be stored in arrays', function () {
-        var foo = [];
-        foo.push(function () {});
-        (typeof foo[0]).should.be.equal('function');
-      });
-
-      it('should be passed as arguments to functions', function () {
-        function foo (x) {
-          (typeof x).should.be.equal('function');
-        }
-        foo(function () {});
-      });
-
-      it('should be returned from functions', function () {
-        function foo () {
-          return function () {};
-        }
-        (typeof foo()).should.be.equal('function');
-      });
-
-      it('should have methods', function () {
-        function foo () {};
-        foo.bar = 'bar of foo';
-        foo.should.have.property('bar', 'bar of foo');
-        (typeof foo).should.be.equal('function');
-      });
-
+//
 // >   The thing that is special about functions is that they can be invoked.
 
       it('should be invoked from variables', function () {
@@ -797,7 +765,7 @@ describe('JavaScript: The Good Parts', function () {
       it('too few arguments should produce undefined parameters', function () {
         function need2Args (a, b) {
           a.should.be.equal(1);
-          (b === undefined).should.be.true;
+          (typeof b).should.be.equal('undefined');
         }
         need2Args(1);
       });
@@ -840,9 +808,189 @@ describe('JavaScript: The Good Parts', function () {
         foo.push(getLength);
         foo[0]().should.be.equal(1);
 
-        foo.push(1);
-        foo.push('a');
-        foo[0]().should.be.equal(3);
+        foo.push('x');
+        foo[0]().should.be.equal(2);
+      });
+    });
+
+// ### The Function Invocation Pattern
+
+    describe('The Function Invocation Pattern', function () {
+
+// >   When a function is not the property of an object, then it is invoked as
+//     a function. When a function is invoked with this pattern, `this`is bound
+//     to the global object.
+
+      it('function invocation should bound this to global obj', function () {
+        function foo () {
+          return this;
+        }
+        foo().should.be.equal(root());
+      });
+
+// >   A method cannot employ an inner function to help it do its work because
+//     the inner function does not share the method access to the object as its
+//     `this` is bound to the wrong value.
+
+      it('function invocation should lose method access to obj', function () {
+        var foo = {
+          getFoo: function () {
+            function bar () {
+              return this;
+            }
+            return bar();
+          }
+        };
+        foo.getFoo().should.not.be.equal(foo);
+        foo.getFoo().should.be.equal(root());
+      });
+
+// >   There is an easy workaround. If the method defines a variable and
+//     assigns it the value of `this`, the inner function will have access to
+//     `this` through that variable.
+
+      it('variable should preserve this', function () {
+        var foo = {
+          getFoo: function () {
+            var itself = this;
+            function bar () {
+              return itself;
+            }
+            return bar();
+          }
+        };
+        foo.getFoo().should.be.equal(foo);
+      });
+    });
+
+// ### The Constructor Invocation Pattern
+
+    describe('The Constructor Invocation Pattern', function () {
+
+// >   JavaScript is a **prototypal** inheritance language. That means that
+//     objects can inherit properties directly from other objects. The language
+//     is class-free.
+//
+// >   If a function is invoked with the `new` prefix, then a new object will
+//     be created with a hidden link to the value of the function `prototype`
+//     member, and `this` will be bound to that new object.
+//
+// >   Functions that are intended to be used with the `new` prefix are called
+//     **constructors**. By convention, they are kept in variables with a
+//     capitalized name.
+
+      it('this should be bound to new object', function () {
+        function Create () {
+          this.whoami = 'foo';
+        }
+
+        var bar = Create();
+        (typeof bar).should.be.equal('undefined');
+
+        var qux = new Create();
+        qux.should.have.property('whoami', 'foo');
+      });
+    });
+
+// ### The Apply Invocation Pattern
+
+    describe('The Apply Invocation Pattern', function () {
+
+// >   The `apply` method _[of any function]_ lets us construct an array of
+//     arguments to use to invoke a function. It also lets us choose the value
+//     of `this`.
+
+      it('should use an array as arguments', function () {
+        function sum (x, y) {
+          return x + y;
+        }
+        sum.apply(null, [3, 4]).should.be.equal(7);
+      });
+
+      it('should change the value of this', function () {
+        function getName () {
+          return this.whoami;
+        }
+        var foo = { whoami: 'foo' };
+        getName.apply(foo).should.be.equal('foo');
+      });
+    });
+
+// ### Arguments
+
+    describe('Arguments', function () {
+
+// >   A bonus parameter that is available to functions when they are invoked
+//     the `arguments` array. It gives the function access to all of the
+//     arguments that were supplied with the invocation, including excess
+//     arguments that were not assigned to parameters. This makes it possible
+//     to write functions that take an unspecified number of parameters.
+//
+// >   Because of a design error, `arguments` is not really an array. It is an
+//     array-like object. `arguments` has a `length` property, but it lacks all
+//     of the array methods.
+
+      it('should have length property', function () {
+        (function () {
+          arguments.should.have.property('length', 3);
+        })('foo', 'bar', 'qux')
+      });
+
+      it('should have not Array.prototype methods', function () {
+        (function () {
+          arguments.should.not.have.property('push');
+        })();
+      });
+
+      it('should include excess arguments', function () {
+        function sum () {
+          var total = 0;
+          for (var i = 0; i < arguments.length; i++) {
+            total += arguments[i];
+          }
+          return total;
+        }
+        sum(1, 2, 3, 4).should.be.equal(10);
+      });
+    });
+
+// ### Return
+
+    describe('Return', function () {
+
+// >   A function always return a value. If the `return` value is not
+//     specified, then `undefined` is returned.
+
+      it('should return undefined whith no return value', function () {
+        function foo () { return };
+        (typeof foo()).should.be.equal('undefined');
+      });
+
+      it('should return undefined whith no return statement', function () {
+        function foo () {};
+        (typeof foo()).should.be.equal('undefined');
+      });
+
+// >   If the function was invoked with the `new` prefix and the `return` value
+//     is not an object, then `this` (the new object) is returned instead.
+
+      it('new should return this if not return an object', function () {
+        function Foo () {
+          this.whoami = 'foo';
+          return 3;
+        }
+        (new Foo()).should.not.be.eql(3);
+        (new Foo()).should.have.property('whoami', 'foo');
+      });
+      
+      it('new should return object if return an object', function () {
+        function Foo () {
+          this.whoami = 'foo';
+          return {
+            whoami: 'bar'
+          };
+        }
+        (new Foo()).should.have.property('whoami', 'bar');
       });
     });
   });
