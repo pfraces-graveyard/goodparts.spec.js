@@ -996,5 +996,29 @@ describe('JavaScript: The Good Parts', function () {
         (new Foo()).should.have.property('whoami', 'bar');
       });
     });
+
+// ### Exceptions
+
+    describe('Exceptions', function () {
+
+// >   The `throw` statement interrupts execution of the function. It should be
+//     given an `exception` object containing a `name` property that identifies
+//     the type of the exception, and a descriptive `message` property. You can
+//     also add other properties.
+//
+// >   The `exception` object will be delivered to the `catch` clause of a
+//     `try` statement.
+
+      it('should contain name and message');
+      it('should contain other properties');
+    });
+
+// ### Augmenting Types
+
+    describe('Augmenting Types', function () {
+
+// >   
+
+    });
   });
 });
