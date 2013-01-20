@@ -883,10 +883,6 @@ describe('JavaScript: The Good Parts', function () {
         function Create () {
           this.whoami = 'foo';
         }
-
-        var bar = Create();
-        (typeof bar).should.be.equal('undefined');
-
         var qux = new Create();
         qux.should.have.property('whoami', 'foo');
       });
