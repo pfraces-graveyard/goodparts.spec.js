@@ -580,9 +580,46 @@ describe('JavaScript: The Good Parts', function () {
 //     hidden properties: the function context and the code that implements the
 //     function behavior.
 
+      it('functions should inherit from Function', function () {
+        var foo = function () {};
+        foo.should.not.have.property('bar');
+        Function.prototype.bar = 'bar of Function';
+        foo.should.have.property('bar', 'bar of Function');
+        delete Function.prototype.bar;
+      });
+
+      it('Function should inherit from Object', function () {
+        var foo = function () {};
+        foo.should.not.have.property('bar');
+        foo.should.not.have.property('qux');
+
+        Object.prototype.bar = 'bar of Object';
+        Function.prototype.qux = 'qux of Function';
+        foo.should.have.property('bar', 'bar of Object');
+        foo.should.have.property('qux', 'qux of Function');
+
+        /* Function inherits from Object, not vice versa */
+        var foz = {};
+        foz.should.not.have.property('qux');
+        foz.should.have.property('bar', 'bar of Object');
+
+        delete Object.prototype.bar;
+        delete Function.prototype.qux;
+      });
+
 // >   Every function object is also created with a `prototype` property. Its
 //     value is an object with a `constructor` property whose value is **the**
 //     function. This is distinct from the hidden link to `Function.prototype`.
+
+      it('functions should have constructor', function () {
+        var foo = function () {};
+        foo.prototype.should.have.property('constructor');
+      });
+
+      it('function constructor should be the function itself', function () {
+        var foo = function () {};
+        foo.prototype.constructor.should.be.equal(foo);
+      });
 
 // >   Since functions are objects, they can be used like any other value.
 //     Functions can be stored in variables, objects, and arrays. Functions
@@ -590,7 +627,191 @@ describe('JavaScript: The Good Parts', function () {
 //     from functions. Also, since functions are objects, functions can have
 //     methods.
 
+      it('functions should be stored in a variable', function () {
+        var foo = function () {};
+        (typeof foo).should.be.equal('function');
+      });
+
+      it('should be stored in objects', function () {
+        var foo = { fn: function () {} };
+        (typeof foo.fn).should.be.equal('function');
+      });
+
+      it('should be stored in arrays', function () {
+        var foo = [];
+        foo.push(function () {});
+        (typeof foo[0]).should.be.equal('function');
+      });
+
+      it('should be passed as arguments to functions', function () {
+        function foo (x) {
+          (typeof x).should.be.equal('function');
+        }
+        foo(function () {});
+      });
+
+      it('should be returned from functions', function () {
+        function foo () {
+          return function () {};
+        }
+        (typeof foo()).should.be.equal('function');
+      });
+
+      it('should have methods', function () {
+        function foo () {};
+        foo.bar = 'bar of foo';
+        foo.should.have.property('bar', 'bar of foo');
+        (typeof foo).should.be.equal('function');
+      });
+
 // >   The thing that is special about functions is that they can be invoked.
+
+      it('should be invoked from variables', function () {
+        function foo () { return 'foo'; }
+        var bar = foo;
+        bar().should.be.equal('foo');
+      });
+
+      it('should be invoked as members', function () {
+        function foo () { return 'foo'; }
+        var bar = { qux: foo };
+        bar.qux().should.be.equal('foo');
+      });
+
+      it('should be invoked from arrays', function () {
+        function foo () { return 'foo'; }
+        var bar = [];
+        bar.push(foo);
+        bar[0]().should.be.equal('foo');
+      });
+
+      it('should be invoked as arguments', function () {
+        function foo () { return 'foo'; }
+        function bar (x) { x().should.be.equal('foo'); }
+        bar(foo);
+      });
+
+      it('should be invoked as returning value', function () {
+        function foo () { return 'foo'; }
+        function bar () { return foo; }
+        bar()().should.be.equal('foo');
+      });
+
+      it('should be invoked having methods', function () {
+        function foo () { return 'foo'; }
+        foo.bar = 'bar of foo';
+        foo().should.be.equal('foo');
+        foo.should.have.property('bar', 'bar of foo');
+      });
+    });
+
+// ### Function Literal
+
+    describe('Function Literal', function () {
+
+// >   The function can use its name to call itself recursively. If a function
+//     is not given a name it is said to be **anonymous**.
+
+      it('should use its name to call itself', function () {
+        var foo = function fact (x) {
+          if (x === 0 || x === 1) return x;
+          return x * fact(x - 1);
+        };
+        foo(5).should.be.equal(120);
+      });
+
+      it('functions should be annonymous', function () {
+        (function () { return 'foo'; })().should.be.equal('foo');
+      });
+
+// >   A function literal can appear anywhere that an expression can appear.
+//     Functions can be defined inside other functions. An inner function of
+//     course has access to its parameters and variables. An inner function
+//     also enjoys access to the parameters and variables of the functions it
+//     is nested within. The function object created by a function literal
+//     contains a link to the outer context. This is called **closure**.
+
+      it('should be defined inside other functions', function () {
+        (function () {
+          function foo () { 
+            return 'bar';
+          }
+          return foo();
+        })().should.be.equal('bar');
+      });
+
+      it('inner functions should have access to its params', function () {
+        (function () {
+          function sum2 (x) {
+            var two = 2;
+            return x + two;
+          }
+          return sum2(3);
+        })().should.be.equal(5);
+      });
+
+      it('inner functions shoud have access to outer contexts', function () {
+        function foo () {
+          var a = 1;
+          function bar () {
+            var b = 2;
+            function qux () {
+              var c = 3;
+              return a + b + c;
+            }
+            return qux();
+          }
+          return bar();
+        }
+        foo().should.be.equal(6);
+      });
+    });
+
+// ### Invocation
+
+    describe('Invocation', function () {
+
+// >   In adition to the declared parameters, every function receives two
+//     additional parameters: `this` and `arguments`. The `this` parameter is
+//     vary important in object oriented programming, and its value is
+//     determined by the **invocation pattern**. There are four patterns of
+//     invocation in JavaScript: the **method invocation pattern**, the
+//     **function invocation pattern**, the **constructor invocation pattern**,
+//     and the **apply invocation pattern**. The patterns differ in how the
+//     bonus parameter `this` is initialized.
+
+      it('functions should have a this parameter for free', function () {
+        (function () {
+          should.exist(this);
+        })();
+      });
+
+      it('functions should have an arguments parameter for free', function () {
+        (function () {
+          should.exist(arguments);
+        })();
+      });
+
+// >   There is no runtime error when the number of arguments and the number of
+//     parameters do not match. If there are too many arguments, the extra
+//     arguments will be ignored. If there are too few arguments, the
+//     `undefined` value will be substituted for the missing values. There is
+//     no type checking on the argument values: any type of value can be passed
+//     to any parameter.
+
+      it('too few arguments should produce undefined parameters', function () {
+        function need2Args (a, b) {
+          a.should.be.equal(1);
+          (b === undefined).should.be.true;
+        }
+        need2Args(1);
+      });
+    });
+
+// ### The Method Invocation Pattern
+
+    describe('The Method Invocation Pattern', function () {
+
     });
   });
 });

@@ -471,19 +471,213 @@ iré ampliando progresivamente con diferentes libros y entornos</p>             
       <code>Object.prototype</code>). Every function is also created with two additional
       hidden properties: the function context and the code that implements the
       function behavior.</p>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-42">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-42">&#182;</a>               </div>               <blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;functions should inherit from Function&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+        <span class="nb">Function</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="s1">&#39;bar of Function&#39;</span><span class="p">;</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bar of Function&#39;</span><span class="p">);</span>
+        <span class="k">delete</span> <span class="nb">Function</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">bar</span><span class="p">;</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;Function should inherit from Object&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;qux&#39;</span><span class="p">);</span>
+
+        <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="s1">&#39;bar of Object&#39;</span><span class="p">;</span>
+        <span class="nb">Function</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">qux</span> <span class="o">=</span> <span class="s1">&#39;qux of Function&#39;</span><span class="p">;</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bar of Object&#39;</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;qux&#39;</span><span class="p">,</span> <span class="s1">&#39;qux of Function&#39;</span><span class="p">);</span>
+
+        <span class="cm">/* Function inherits from Object, not vice versa */</span>
+        <span class="kd">var</span> <span class="nx">foz</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="nx">foz</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">not</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;qux&#39;</span><span class="p">);</span>
+        <span class="nx">foz</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bar of Object&#39;</span><span class="p">);</span>
+
+        <span class="k">delete</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">bar</span><span class="p">;</span>
+        <span class="k">delete</span> <span class="nb">Function</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">qux</span><span class="p">;</span>
+      <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-42">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-42">&#182;</a>               </div>               <blockquote>
   <p>Every function object is also created with a <code>prototype</code> property. Its
       value is an object with a <code>constructor</code> property whose value is <strong>the</strong>
       function. This is distinct from the hidden link to <code>Function.prototype</code>.</p>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-43">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-43">&#182;</a>               </div>               <blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;functions should have constructor&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;constructor&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;function constructor should be the function itself&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+      <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-43">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-43">&#182;</a>               </div>               <blockquote>
   <p>Since functions are objects, they can be used like any other value.
       Functions can be stored in variables, objects, and arrays. Functions
       can be passed as arguments to functions, and functions can be returned
       from functions. Also, since functions are objects, functions can have
       methods.</p>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-44">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-44">&#182;</a>               </div>               <blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;functions should be stored in a variable&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+        <span class="p">(</span><span class="k">typeof</span> <span class="nx">foo</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;function&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be stored in objects&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">fn</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{}</span> <span class="p">};</span>
+        <span class="p">(</span><span class="k">typeof</span> <span class="nx">foo</span><span class="p">.</span><span class="nx">fn</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;function&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be stored in arrays&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{});</span>
+        <span class="p">(</span><span class="k">typeof</span> <span class="nx">foo</span><span class="p">[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;function&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be passed as arguments to functions&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">foo</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+          <span class="p">(</span><span class="k">typeof</span> <span class="nx">x</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;function&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">foo</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{});</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be returned from functions&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">foo</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+        <span class="p">}</span>
+        <span class="p">(</span><span class="k">typeof</span> <span class="nx">foo</span><span class="p">()).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;function&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should have methods&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">foo</span> <span class="p">()</span> <span class="p">{};</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="s1">&#39;bar of foo&#39;</span><span class="p">;</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bar of foo&#39;</span><span class="p">);</span>
+        <span class="p">(</span><span class="k">typeof</span> <span class="nx">foo</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;function&#39;</span><span class="p">);</span>
+      <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-44">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-44">&#182;</a>               </div>               <blockquote>
   <p>The thing that is special about functions is that they can be invoked.</p>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="p">});</span>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be invoked from variables&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">foo</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span> <span class="p">}</span>
+        <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">foo</span><span class="p">;</span>
+        <span class="nx">bar</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be invoked as members&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">foo</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span> <span class="p">}</span>
+        <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">qux</span><span class="o">:</span> <span class="nx">foo</span> <span class="p">};</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">qux</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be invoked from arrays&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">foo</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span> <span class="p">}</span>
+        <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">bar</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+        <span class="nx">bar</span><span class="p">[</span><span class="mi">0</span><span class="p">]().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be invoked as arguments&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">foo</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span> <span class="p">}</span>
+        <span class="kd">function</span> <span class="nx">bar</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="nx">x</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span> <span class="p">}</span>
+        <span class="nx">bar</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be invoked as returning value&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">foo</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span> <span class="p">}</span>
+        <span class="kd">function</span> <span class="nx">bar</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">foo</span><span class="p">;</span> <span class="p">}</span>
+        <span class="nx">bar</span><span class="p">()().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be invoked having methods&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">foo</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span> <span class="p">}</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">bar</span> <span class="o">=</span> <span class="s1">&#39;bar of foo&#39;</span><span class="p">;</span>
+        <span class="nx">foo</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+        <span class="nx">foo</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;bar of foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-45">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-45">&#182;</a>               </div>               <h3>Function Literal</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Function Literal&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-46">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-46">&#182;</a>               </div>               <blockquote>
+  <p>The function can use its name to call itself recursively. If a function
+      is not given a name it is said to be <strong>anonymous</strong>.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should use its name to call itself&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">fact</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
+          <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">fact</span><span class="p">(</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">};</span>
+        <span class="nx">foo</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">120</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;functions should be annonymous&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span> <span class="p">})().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">);</span>
+      <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-47">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-47">&#182;</a>               </div>               <blockquote>
+  <p>A function literal can appear anywhere that an expression can appear.
+      Functions can be defined inside other functions. An inner function of
+      course has access to its parameters and variables. An inner function
+      also enjoys access to the parameters and variables of the functions it
+      is nested within. The function object created by a function literal
+      contains a link to the outer context. This is called <strong>closure</strong>.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;should be defined inside other functions&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="kd">function</span> <span class="nx">foo</span> <span class="p">()</span> <span class="p">{</span> 
+            <span class="k">return</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="k">return</span> <span class="nx">foo</span><span class="p">();</span>
+        <span class="p">})().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;inner functions should have access to its params&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="kd">function</span> <span class="nx">sum2</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">two</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">two</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="k">return</span> <span class="nx">sum2</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+        <span class="p">})().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;inner functions shoud have access to outer contexts&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">foo</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+          <span class="kd">function</span> <span class="nx">bar</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="kd">function</span> <span class="nx">qux</span> <span class="p">()</span> <span class="p">{</span>
+              <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+              <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span> <span class="o">+</span> <span class="nx">c</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">qux</span><span class="p">();</span>
+          <span class="p">}</span>
+          <span class="k">return</span> <span class="nx">bar</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="nx">foo</span><span class="p">().</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-48">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-48">&#182;</a>               </div>               <h3>Invocation</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;Invocation&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-49">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-49">&#182;</a>               </div>               <blockquote>
+  <p>In adition to the declared parameters, every function receives two
+      additional parameters: <code>this</code> and <code>arguments</code>. The <code>this</code> parameter is
+      vary important in object oriented programming, and its value is
+      determined by the <strong>invocation pattern</strong>. There are four patterns of
+      invocation in JavaScript: the <strong>method invocation pattern</strong>, the
+      <strong>function invocation pattern</strong>, the <strong>constructor invocation pattern</strong>,
+      and the <strong>apply invocation pattern</strong>. The patterns differ in how the
+      bonus parameter <code>this</code> is initialized.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;functions should have a this parameter for free&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="nx">should</span><span class="p">.</span><span class="nx">exist</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="p">})();</span>
+      <span class="p">});</span>
+
+      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;functions should have an arguments parameter for free&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="nx">should</span><span class="p">.</span><span class="nx">exist</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);</span>
+        <span class="p">})();</span>
+      <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-50">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-50">&#182;</a>               </div>               <blockquote>
+  <p>There is no runtime error when the number of arguments and the number of
+      parameters do not match. If there are too many arguments, the extra
+      arguments will be ignored. If there are too few arguments, the
+      <code>undefined</code> value will be substituted for the missing values. There is
+      no type checking on the argument values: any type of value can be passed
+      to any parameter.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;too few arguments should produce undefined parameters&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">function</span> <span class="nx">need2Args</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">a</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+          <span class="p">(</span><span class="nx">b</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">need2Args</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">});</span></pre></div>             </td>           </tr>                               <tr id="section-51">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-51">&#182;</a>               </div>               <h3>The Method Invocation Pattern</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;The Method Invocation Pattern&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+    <span class="p">});</span>
   <span class="p">});</span>
 <span class="p">});</span>
 
