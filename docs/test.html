@@ -734,10 +734,6 @@
         <span class="kd">function</span> <span class="nx">Create</span> <span class="p">()</span> <span class="p">{</span>
           <span class="k">this</span><span class="p">.</span><span class="nx">whoami</span> <span class="o">=</span> <span class="s1">&#39;foo&#39;</span><span class="p">;</span>
         <span class="p">}</span>
-
-        <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="nx">Create</span><span class="p">();</span>
-        <span class="p">(</span><span class="k">typeof</span> <span class="nx">bar</span><span class="p">).</span><span class="nx">should</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;undefined&#39;</span><span class="p">);</span>
-
         <span class="kd">var</span> <span class="nx">qux</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Create</span><span class="p">();</span>
         <span class="nx">qux</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;whoami&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">);</span>
       <span class="p">});</span>
