@@ -1,8 +1,8 @@
 // # test-js
 
-// Testing JavaScript internals!
+// Testing JavaScript internals
 //
-// I will start test which is said in 'JavaScript: The Good Parts' under
+// I will start testing which is said in 'JavaScript: The Good Parts' under
 // `node.js`. Future updates will include more readings and more environments.
 
 var should = require('should');
