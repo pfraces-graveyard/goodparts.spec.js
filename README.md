@@ -11,13 +11,13 @@ environments.
 
 # Environments covered
 
-*   `node.js`
+*   node.js
 
 # Future readings
 
 *   Trevor Burnham's "Async JavaScript"
-*   Substack's "Streaming Handbook"
-*   "The Little Schemer"
+*   James Hallidayd's "Streaming Handbook"
+*   Friedman and Felleisen's "The Little Schemer"
 
 # Future environments
 
