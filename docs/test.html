@@ -1,39 +1,50 @@
 <!DOCTYPE html>  <html> <head>   <title>test.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               test.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>Testing JavaScript internals.</p>
 
 <p>I will start testing which is said in 'JavaScript: The Good Parts' under
-<code>node.js</code>. Future updates will include more readings and more environments.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">should</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;should&#39;</span><span class="p">);</span>
+<code>node.js</code>. Future updates will include more readings and more environments.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="kd">var</span> <span class="nx">should</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;should&#39;</span><span class="p">);</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h1>"JavaScript: The Good Parts" by Douglas Crockford</h1>
 
-<span class="cm">/**</span>
-<span class="cm"> * Helper functions</span>
-<span class="cm"> */</span>
+<p>IMHO this book is aimed for people with a basic knowledge of programming,
+familiarized with concepts such <em>variable</em>, <em>function</em> or <em>dot notation</em>.
+I think its a perfect choice for people familiarized with the OOP paradigm
+who don't know anything about functional programming.</p>
 
-<span class="cm">/**</span>
-<span class="cm"> * root()</span>
-<span class="cm"> *</span>
-<span class="cm"> * Returns the root object, `window` in the browser, or `global` on the server.</span>
-<span class="cm"> */</span>
-<span class="kd">function</span> <span class="nx">root</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="cm">/*</span>
-<span class="cm">  * return window || global;</span>
-<span class="cm">  *   in node.js, causes a ReferenceError: window is not defined.</span>
-<span class="cm">  * return (function () { return this; })();</span>
-<span class="cm">  *   will be a good solution for code-sharing (node.js/browsers).</span>
-<span class="cm">  * But actually we are just in node.js, so we can just return global.</span>
+<p>If this docuemnt is hard for you to understand I will recommend you to read
+Marijn Haverbeke's <strong>Eloquent JavaScript</strong> from start to finish, which its
+a good introduction to programming. Then <strong>write some code</strong>. When you are
+more confortable with the basics, <strong>try this again!</strong></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;JavaScript: The Good Parts&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Helper functions</span>
+<span class="cm">   */</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * root()</span>
+<span class="cm">   *</span>
+<span class="cm">   * Returns the root object, `window` in the browser, or `global` on the</span>
+<span class="cm">   * server.</span>
+<span class="cm">   */</span>
+  <span class="kd">function</span> <span class="nx">root</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="cm">/*</span>
+<span class="cm">    * return window || global;</span>
+<span class="cm">    *   in node.js, causes a ReferenceError: window is not defined.</span>
+<span class="cm">    * return (function () { return this; })();</span>
+<span class="cm">    *   will be a good solution for code-sharing (node.js/browsers).</span>
+<span class="cm">    * But actually we are just in node.js, so we can just return global.</span>
+<span class="cm">    */</span>
+    <span class="k">return</span> <span class="nx">global</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="cm">/**</span>
+<span class="cm">  * extend(o)</span>
+<span class="cm">  *</span>
+<span class="cm">  * Creates a new object which prototype points to the object received.</span>
+<span class="cm">  * Simple inheritance abstraction.</span>
 <span class="cm">  */</span>
-  <span class="k">return</span> <span class="nx">global</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="cm">/**</span>
-<span class="cm">* extend(o)</span>
-<span class="cm">*</span>
-<span class="cm">* Creates a new object which prototype points to the object received.</span>
-<span class="cm">* Simple inheritance abstraction.</span>
-<span class="cm">*/</span>
-<span class="kd">function</span> <span class="nx">extend</span> <span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">F</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
-  <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
-<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h1>"JavaScript: The Good Parts" by Douglas Crockford</h1>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;JavaScript: The Good Parts&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2>1. Good Parts</h2>
+  <span class="kd">function</span> <span class="nx">extend</span> <span class="p">(</span><span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">F</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{};</span>
+    <span class="nx">F</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">o</span><span class="p">;</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">F</span><span class="p">();</span>
+  <span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2>1. Good Parts</h2>
 
 <blockquote>
   <p>JavaScript's functions are first class objects with (mostly) lexical

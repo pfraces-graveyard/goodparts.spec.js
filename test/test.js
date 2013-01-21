@@ -5,41 +5,52 @@
 
 var should = require('should');
 
-/**
- * Helper functions
- */
-
-/**
- * root()
- *
- * Returns the root object, `window` in the browser, or `global` on the server.
- */
-function root () {
-  /*
-  * return window || global;
-  *   in node.js, causes a ReferenceError: window is not defined.
-  * return (function () { return this; })();
-  *   will be a good solution for code-sharing (node.js/browsers).
-  * But actually we are just in node.js, so we can just return global.
-  */
-  return global;
-}
-
-/**
-* extend(o)
-*
-* Creates a new object which prototype points to the object received.
-* Simple inheritance abstraction.
-*/
-function extend (o) {
-  var F = function () {};
-  F.prototype = o;
-  return new F();
-}
-
 // # "JavaScript: The Good Parts" by Douglas Crockford
+//
+// IMHO this book is aimed for people with a basic knowledge of programming,
+// familiarized with concepts such _variable_, _function_ or _dot notation_.
+// I think its a perfect choice for people familiarized with the OOP paradigm
+// who don't know anything about functional programming.
+//
+// If this docuemnt is hard for you to understand I will recommend you to read
+// Marijn Haverbeke's **Eloquent JavaScript** from start to finish, which its
+// a good introduction to programming. Then **write some code**. When you are
+// more confortable with the basics, **try this again!**
 
 describe('JavaScript: The Good Parts', function () {
+
+  /**
+   * Helper functions
+   */
+
+  /**
+   * root()
+   *
+   * Returns the root object, `window` in the browser, or `global` on the
+   * server.
+   */
+  function root () {
+    /*
+    * return window || global;
+    *   in node.js, causes a ReferenceError: window is not defined.
+    * return (function () { return this; })();
+    *   will be a good solution for code-sharing (node.js/browsers).
+    * But actually we are just in node.js, so we can just return global.
+    */
+    return global;
+  }
+
+  /**
+  * extend(o)
+  *
+  * Creates a new object which prototype points to the object received.
+  * Simple inheritance abstraction.
+  */
+  function extend (o) {
+    var F = function () {};
+    F.prototype = o;
+    return new F();
+  }
 
 // ## 1. Good Parts
 //
