@@ -1,26 +1,6 @@
-# Mocha bdd w/ should
+# test.js
 
-    $ npm install -g mocha
-    $ npm install should
-    $ mkdir test
-    $ npm install should
-    $ $EDITOR test/test.js
+Testing JavaScript internals.
 
-```javascript
-var should = require('should');
-
-describe('Array', function () {
-  describe('#indexOf()', function () {
-    it('should return -1 when the value is not present', function () {
-      [1,2,3].indexOf(5).should.equal(-1);
-      [1,2,3].indexOf(0).should.equal(-1);
-    });
-  });
-});
-```
-
-    $ mocha
-
-> .
->
-> 1 test complete (1ms)
+I will start testing which is said in 'JavaScript: The Good Parts' under
+`node.js`. Future updates will include more readings and more environments.

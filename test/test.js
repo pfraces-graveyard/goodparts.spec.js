@@ -1,10 +1,3 @@
-// Testing JavaScript internals.
-//
-// I will start testing which is said in 'JavaScript: The Good Parts' under
-// `node.js`. Future updates will include more readings and more environments.
-
-var should = require('should');
-
 // # "JavaScript: The Good Parts" by Douglas Crockford
 //
 // IMHO this book is aimed for people with a basic knowledge of programming,
@@ -16,6 +9,16 @@ var should = require('should');
 // Marijn Haverbeke's **Eloquent JavaScript** from start to finish, which its
 // a good introduction to programming. Then **write some code**. When you are
 // more confortable with the basics, **try this again!**
+//
+// ## 1. Good Parts
+//
+// >   JavaScript's functions are first class objects with (mostly) lexical
+//     scoping. JavaScript is the first lambda language to go mainstream. Deep
+//     down, JavaScript has more in common with List and Scheme than with Java.
+//     **It's Lisp in C's clothing.** This makes JavaScript a remarkably
+//     powerful language.
+
+var should = require('should');
 
 describe('JavaScript: The Good Parts', function () {
 
@@ -51,14 +54,6 @@ describe('JavaScript: The Good Parts', function () {
     F.prototype = o;
     return new F();
   }
-
-// ## 1. Good Parts
-//
-// >   JavaScript's functions are first class objects with (mostly) lexical
-//     scoping. JavaScript is the first lambda language to go mainstream. Deep
-//     down, JavaScript has more in common with List and Scheme than with Java.
-//     **It's Lisp in C's clothing.** This makes JavaScript a remarkably
-//     powerful language.
 
 // ## 2. Grammar
 
