@@ -7,7 +7,7 @@ environments.
 
 # Readings covered
 
-*   Douglas Crockford's "JavaScript: The Good Parts"
+*   Douglas Crockford's "JavaScript: The Good Parts" (in `test/goodparts.js')
 
 # Environments covered
 
